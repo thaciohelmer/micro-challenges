@@ -50,7 +50,7 @@ export class ChallengesService {
 
   async getById(_id: any): Promise<Challenge> {
     try {
-      return await this.challengeModel.findOne({ _id });
+      return (await this.challengeModel.findOne({ _id })).populated('category');
     } catch (error) {
       throw new RpcException(error.message)
     }

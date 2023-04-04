@@ -12,10 +12,11 @@ export class MatchsService {
 
   constructor(
     @InjectModel('Match') private readonly matchModel: Model<Match>,
-    private clientAdmBackend: ClientProxySmartRanking
+    private clientAdmBackend: ClientProxySmartRanking,
   ) { }
 
   private clientChallenges = this.clientAdmBackend.getChallenge()
+  private clientRankings = this.clientAdmBackend.getRanking()
 
   async create(match: Match): Promise<Match> {
     try {
@@ -27,7 +28,9 @@ export class MatchsService {
 
       await lastValueFrom(this.clientChallenges.emit('update-challenge-match', { matchId, challenge }))
 
-      return result
+      const ranking = await lastValueFrom(this.clientRankings.emit('process-match', { matchId, match: result }))
+
+      return ranking
     } catch (error) {
       throw new RpcException(error.message)
     }
