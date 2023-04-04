@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MatchsModule } from './matchs/matchs.module';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
   imports: [MongooseModule.forRootAsync(
@@ -19,7 +21,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }
     }
   ),
-  ConfigModule.forRoot({ isGlobal: true })
+  ConfigModule.forRoot({ isGlobal: true }),
+    MatchsModule,
+    ChallengesModule,
   ],
   controllers: [],
   providers: [],
